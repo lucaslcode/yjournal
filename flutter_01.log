@@ -1,0 +1,80 @@
+Flutter crash report; please file at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter upgrade
+
+## exception
+
+_CompileTimeError: 'package:flutter_tools/src/base/flags.dart': error: line 21: identifier expected
+  : assert(_globalResults != null);
+    ^
+
+
+```
+#0      CommandRunner.run.<anonymous closure> (package:args/command_runner.dart:109)
+#1      new Future.sync (dart:async/future.dart:222)
+#2      CommandRunner.run (package:args/command_runner.dart:109)
+#3      FlutterCommandRunner.run (package:flutter_tools/src/runner/flutter_command_runner.dart:162)
+#4      run.<anonymous closure> (package:flutter_tools/runner.dart:89)
+<asynchronous suspension>
+#5      AppContext._run (package:flutter_tools/src/base/context.dart:76)
+<asynchronous suspension>
+#6      AppContext.runInZone.<anonymous closure> (package:flutter_tools/src/base/context.dart:66)
+#7      _rootRun (dart:async/zone.dart:1120)
+#8      _CustomZone.run (dart:async/zone.dart:1001)
+#9      runZoned (dart:async/zone.dart:1467)
+#10     AppContext.runInZone (package:flutter_tools/src/base/context.dart:65)
+#11     run (package:flutter_tools/runner.dart:60)
+<asynchronous suspension>
+#12     main (package:flutter_tools/executable.dart:43)
+<asynchronous suspension>
+#13     main (file:///D:/code/flutter/packages/flutter_tools/bin/flutter_tools.dart:16)
+#14     _startIsolate.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:263)
+#15     _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:151)
+```
+
+## flutter doctor
+
+```
+encountered exception: NoSuchMethodError: The method 'contains' was called on null.
+Receiver: null
+Tried calling: contains(" ")
+
+#0      Object._noSuchMethod (dart:core-patch/object_patch.dart:42)
+#1      Object.noSuchMethod (dart:core-patch/object_patch.dart:46)
+#2      _FlutterValidator.validate (package:flutter_tools/src/doctor.dart:201)
+<asynchronous suspension>
+#3      Doctor.diagnose (package:flutter_tools/src/doctor.dart:105)
+<asynchronous suspension>
+#4      _doctorText.<anonymous closure> (package:flutter_tools/runner.dart:236)
+#5      AppContext._run (package:flutter_tools/src/base/context.dart:76)
+<asynchronous suspension>
+#6      AppContext.runInZone.<anonymous closure> (package:flutter_tools/src/base/context.dart:66)
+#7      _rootRun (dart:async/zone.dart:1120)
+#8      _CustomZone.run (dart:async/zone.dart:1001)
+#9      runZoned (dart:async/zone.dart:1467)
+#10     AppContext.runInZone (package:flutter_tools/src/base/context.dart:65)
+#11     _doctorText (package:flutter_tools/runner.dart:236)
+<asynchronous suspension>
+#12     _createLocalCrashReport (package:flutter_tools/runner.dart:211)
+<asynchronous suspension>
+#13     _handleToolError (package:flutter_tools/runner.dart:166)
+<asynchronous suspension>
+#14     run.<anonymous closure> (package:flutter_tools/runner.dart:93)
+<asynchronous suspension>
+#15     AppContext._run (package:flutter_tools/src/base/context.dart:76)
+<asynchronous suspension>
+#16     AppContext.runInZone.<anonymous closure> (package:flutter_tools/src/base/context.dart:66)
+#17     _rootRun (dart:async/zone.dart:1120)
+#18     _CustomZone.run (dart:async/zone.dart:1001)
+#19     runZoned (dart:async/zone.dart:1467)
+#20     AppContext.runInZone (package:flutter_tools/src/base/context.dart:65)
+#21     run (package:flutter_tools/runner.dart:60)
+<asynchronous suspension>
+#22     main (package:flutter_tools/executable.dart:43)
+<asynchronous suspension>
+#23     main (file:///D:/code/flutter/packages/flutter_tools/bin/flutter_tools.dart:16)
+#24     _startIsolate.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:263)
+#25     _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:151)
+```
