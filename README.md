@@ -1,8 +1,14 @@
-# yjournal
+# yJournal
 
-A new Flutter project.
+A journal app to explore using [flutter](http://flutter.io/).
 
-## Getting Started
+This is a hobby project and I'm am not an actual programmer. Issues/tips/pull requests are welcome!
 
-For help getting started with Flutter, view our online
-[documentation](http://flutter.io/).
+## Planned Features
+
+- Support entries longer than the viewport
+- Backup/Export and Restore/Import
+- Background images
+- Search
+- Tags
+- i18n support
