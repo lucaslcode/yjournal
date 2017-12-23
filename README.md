@@ -7,6 +7,7 @@ This is a hobby project and I'm am not an actual programmer. Issues/tips/pull re
 ## Planned Features
 
 - Support entries longer than the viewport
+- Unit Tests
 - Backup/Export and Restore/Import
 - Background images
 - Search
