@@ -29,14 +29,12 @@ class _DetailPageState extends State<DetailPage> {
   initState() {
     super.initState();
     controller = new TextEditingController(text: widget.text);
-    focusNode = new FocusNode();
     date = widget.date;
   }
 
   @override
   dispose() {
     controller.dispose();
-    focusNode.dispose();
     super.dispose();
   }
 
@@ -58,12 +56,11 @@ class _DetailPageState extends State<DetailPage> {
           children: <Widget>[
             new Row(children: <Widget>[ new Text('${date.day}/${date.month}/${date.year}', style: Theme.of(context).textTheme.body1.apply(fontSizeFactor: 0.8, color: Colors.black54))]),
             new Expanded(
-              child:  new EditableText(
-                  controller: controller,
-                  focusNode: focusNode,
-                  style: Theme.of(context).textTheme.body1,
-                  cursorColor: Colors.black,
-                  maxLines: null
+              child:  new TextField(
+                controller: controller,
+                style: Theme.of(context).textTheme.body1,
+                maxLines: null,
+                decoration: new InputDecoration.collapsed(hintText: ''),
               ),
             ),
           ]

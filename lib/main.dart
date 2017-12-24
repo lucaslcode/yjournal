@@ -8,7 +8,7 @@ import 'package:yjournal/actions.dart';
 import 'package:yjournal/middleware.dart';
 import 'package:yjournal/screens/home_page.dart';
 
-const VERSION = '0.1.0';
+const VERSION = '0.1.1';
 const DBVERSION = 2;
 
 void main() {
