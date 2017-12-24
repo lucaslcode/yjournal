@@ -1,6 +1,13 @@
+import 'package:redux/redux.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:yjournal/models.dart';
+import 'package:yjournal/selectors.dart';
+import 'package:yjournal/actions.dart';
+
+typedef void DateScrollCallback(DateTime newDate, ScrollController scrollController);
 
 const Duration _kMonthScrollDuration = const Duration(milliseconds: 200);
 const double _kDayPickerRowHeight = 42.0;
@@ -9,24 +16,83 @@ const int _kMaxDayPickerRowCount = 6; // A 31 day month that starts on Saturday.
 const double _kMaxDayPickerHeight = _kDayPickerRowHeight * (_kMaxDayPickerRowCount + 2);
 
 class MonthlyPicker extends StatelessWidget {
+  final Key key;
+  final DateTime currentDate;
+  final DateTime viewingMonth;
+  final ValueChanged<DateTime> onViewingMonthChange;
+  final ScrollController scrollController;
+
   MonthlyPicker({
-    Key key,
+    this.key,
     @required this.currentDate,
     @required this.viewingMonth,
-    this.onDateChange,
-    this.filledDates,
-    this.onViewingMonthChange,
-    this.selectedDate
-  }) : assert(currentDate != null),
-    assert(viewingMonth != null),
-    super(key : key);
+    @required this.onViewingMonthChange,
+    @required this.scrollController,
+  }) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return new StoreConnector(
+      converter: (store) => _ViewModel.fromStore(store, viewingMonth),
+      builder: (context, vm) {
+        return new _View(
+          viewingMonth: viewingMonth,
+          onViewingMonthChange: onViewingMonthChange,
+          currentDate: currentDate,
+          filledDates: vm.filledDates,
+          selectedDate: vm.selectedDate,
+          onDateChange: (newDate) => vm.onDateChange(newDate, scrollController),
+        );
+      },
+    );
+  }
+}
+
+class _ViewModel {
+  final List<int> filledDates;
+  final DateTime selectedDate;
+  final DateScrollCallback onDateChange;
+
+  _ViewModel({
+    @required this.filledDates,
+    @required this.selectedDate,
+    @required this.onDateChange,
+  });
+
+  static _ViewModel fromStore(Store<AppState> store, DateTime viewingMonth) {
+    return new _ViewModel(
+      filledDates: filledDatesSelector(store.state, viewingMonth),
+      selectedDate: selectedDateSelector(store.state),
+      onDateChange: (newDate, scrollController) {
+        store.dispatch(new UpdateSelectedDateAction(newDate));
+        //below is num of date headers before selected date
+        int i = dateMappedEntriesSelector(store.state).keys.toList().reversed.toList().indexOf(newDate);
+        //below is num of entries before the selected date
+        int j = -1;
+        if (i > -1) j = dateMappedEntriesSelector(store.state).values.toList().reversed.toList().sublist(0,i).fold<int>(0, (int value, List<Entry> e) => value + e.length);
+        if (j > -1) scrollController.animateTo(i*32.0+j*60.0, duration: new Duration(milliseconds: 500), curve: Curves.easeOut);
+      },
+    );
+  }
+}
+
+class _View extends StatelessWidget {
     final DateTime currentDate;
     final ValueChanged<DateTime> onDateChange;
     final List<int> filledDates;
     final DateTime viewingMonth;
     final ValueChanged<DateTime> onViewingMonthChange;
     final DateTime selectedDate;
+
+    _View({
+      Key key,
+      @required this.currentDate,
+      @required this.viewingMonth,
+      @required this.onDateChange,
+      @required this.filledDates,
+      @required this.onViewingMonthChange,
+      @required this.selectedDate
+    }) : super(key : key);
 
     /// Builds widgets showing abbreviated days of week. The first widget in the
   /// returned list corresponds to the first day of week for the current locale.

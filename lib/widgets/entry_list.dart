@@ -1,23 +1,105 @@
 import 'dart:collection';
 import 'dart:math';
+import 'package:redux/redux.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:yjournal/models.dart';
+import 'package:yjournal/selectors.dart';
+import 'package:yjournal/actions.dart';
+import 'package:yjournal/screens/detail_page.dart';
 
 class EntryList extends StatelessWidget {
-  EntryList({this.entries, this.selectedDate, this.onDismissed, this.scrollController, this.onEntryPressed});
+  final ScrollController scrollController;
+  final ValueChanged<DateTime> onViewingMonthChange;
 
+  EntryList({
+    @required this.scrollController,
+    @required this.onViewingMonthChange
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return new StoreConnector(
+      converter: _ViewModel.fromStore,
+      builder: (context, vm) {
+        return new _View(
+          scrollController: scrollController,
+          isLoading: vm.isLoading,
+          selectedDate: vm.selectedDate,
+          entries: vm.entries,
+          onDismissed: vm.onDismissed,
+          onEntryPressed: (Entry entry) async {
+            Entry e = await Navigator.of(context).push(
+                new MaterialPageRoute(builder: (_) =>
+                new DetailPage(title: 'Edit Entry',
+                    id: entry.id,
+                    date: entry.date,
+                    text: entry.text)
+                )
+            );
+            if (e != null) onViewingMonthChange(entry.date);
+            vm.onEntryPressed(e);
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ViewModel {
+  final bool isLoading;
   final SplayTreeMap<DateTime, List<Entry>> entries;
+  final DateTime selectedDate;
+  final DismissEntryCallback onDismissed;
+  final EditEntryCallback onEntryPressed;
+
+  _ViewModel({
+    @required this.isLoading,
+    @required this.entries,
+    @required this.selectedDate,
+    @required this.onDismissed,
+    @required this.onEntryPressed,
+  });
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return new _ViewModel(
+      isLoading: isLoadingSelector(store.state),
+      entries: dateMappedEntriesSelector(store.state),
+      selectedDate: selectedDateSelector(store.state),
+      onDismissed: (direction, id) => store.dispatch(new RemoveEntryAction(id)),
+      onEntryPressed: (Entry entry) {
+        if (entry != null) {
+          store.dispatch(new UpdateSelectedDateAction(entry.date));
+          store.dispatch(new EditEntryAction(entry.id, entry));
+        }
+      },
+    );
+  }
+}
+
+class _View extends StatelessWidget {
+  final SplayTreeMap<DateTime, List<Entry>> entries;
+  final bool isLoading;
   final DateTime selectedDate;
   final DismissEntryCallback onDismissed;
   final ScrollController scrollController;
   final EditEntryCallback onEntryPressed;
 
-
+  _View({
+    @required this.entries,
+    @required this.isLoading,
+    @required this.selectedDate,
+    @required this.onDismissed,
+    @required this.scrollController,
+    @required this.onEntryPressed});
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
+
+    if (isLoading) return new Center(child: new CircularProgressIndicator(value: null));
 
     if (entries.isEmpty) return new Column(children: <Widget>[
       new ListTile(title: const Text('No entries... yet'), dense: true)
@@ -26,7 +108,7 @@ class EntryList extends StatelessWidget {
     return new ListView.builder(
       shrinkWrap: true,
       controller: scrollController,
-      itemCount: entries.values.length,
+      itemCount: entries.length,
       itemBuilder: (BuildContext context, int index) {
 
         List<Widget> list = [];
