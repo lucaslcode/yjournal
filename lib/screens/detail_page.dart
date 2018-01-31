@@ -10,11 +10,12 @@ class DetailPage extends StatefulWidget {
   final String text;
 
   DetailPage({
+    Key key,
     @required this.title,
     @required this.id,
     @required this.date,
     @required this.text
-  });
+  }) : super(key: key);
 
   @override
   _DetailPageState createState() => new _DetailPageState();

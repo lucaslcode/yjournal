@@ -19,8 +19,5 @@ SplayTreeMap<DateTime, List<Entry>> dateMappedEntriesSelector(AppState state) {
   return entriesMap;
 }
 
-List<int> filledDatesSelector(AppState state, DateTime month) =>
-    state.entries.map((e) {
-      if (e.date.year == month.year &&
-      e.date.month == month.month) return e.date.day;
-    }).toList();
+List<DateTime> entryDatesSelector(AppState state) =>
+    state.entries.map((e) => new DateTime(e.date.year, e.date.month, e.date.day)).toList();

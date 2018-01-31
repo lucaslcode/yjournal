@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:yjournal/app_keys.dart';
 import 'package:yjournal/models.dart';
 import 'package:yjournal/actions.dart';
 import 'package:yjournal/selectors.dart';
 import 'package:yjournal/screens/detail_page.dart';
 
 class AddFab extends StatelessWidget {
-  final Key key;
-
-  AddFab({this.key}) : super(key: key);
+  AddFab({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +20,7 @@ class AddFab extends StatelessWidget {
           addEntry: () async {
             Entry e = await Navigator.of(context).push(
               new MaterialPageRoute(builder: (_) =>
-                new DetailPage(title: 'New Entry', id: null, date: new DateTime(vm.selectedDate.year, vm.selectedDate.month, vm.selectedDate.day), text: '')
+                new DetailPage(key: AppKeys.detailPage, title: 'New Entry', id: null, date: new DateTime(vm.selectedDate.year, vm.selectedDate.month, vm.selectedDate.day), text: '')
               )
             );
             if (e != null) vm.addEntry(e);

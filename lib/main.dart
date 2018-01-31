@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
+import 'package:yjournal/app_keys.dart';
 import 'package:yjournal/models.dart';
 import 'package:yjournal/reducers.dart';
 import 'package:yjournal/actions.dart';
@@ -39,7 +40,7 @@ class App extends StatelessWidget {
           theme: new ThemeData(
             primarySwatch: Colors.teal,
           ),
-          home: new HomePage('yJournal'),
+          home: new HomePage(key: AppKeys.homePage, title: 'yJournal'),
         ),
       ),
     );

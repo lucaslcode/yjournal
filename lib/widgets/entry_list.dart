@@ -5,19 +5,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:yjournal/app_keys.dart';
 import 'package:yjournal/models.dart';
 import 'package:yjournal/selectors.dart';
 import 'package:yjournal/actions.dart';
 import 'package:yjournal/screens/detail_page.dart';
+import 'package:yjournal/widgets/monthly_picker.dart';
 
 class EntryList extends StatelessWidget {
   final ScrollController scrollController;
-  final ValueChanged<DateTime> onViewingMonthChange;
+  final PageController pageController;
 
   EntryList({
-    @required this.scrollController,
-    @required this.onViewingMonthChange
-  });
+    Key key,
+    @required this.pageController,
+    @required this.scrollController
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,9 @@ class EntryList extends StatelessWidget {
                     text: entry.text)
                 )
             );
-            if (e != null) onViewingMonthChange(entry.date);
+            if (e != null) {
+              pageController.jumpToPage(MonthlyPicker.dateTimeToIndex(e.date));
+            }
             vm.onEntryPressed(e);
           },
         );
@@ -88,12 +93,13 @@ class _View extends StatelessWidget {
   final EditEntryCallback onEntryPressed;
 
   _View({
+    Key key,
     @required this.entries,
     @required this.isLoading,
     @required this.selectedDate,
     @required this.onDismissed,
     @required this.scrollController,
-    @required this.onEntryPressed});
+    @required this.onEntryPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -126,11 +132,12 @@ class _View extends StatelessWidget {
         dateEntries.forEach((entry) =>
             list.add(
                 new Dismissible(
-                    key: new Key('__' + entry.id.toString() + '__'),
+                    key: AppKeys.entry(entry.id.toString()),
                     onDismissed: (direction) {
                       onDismissed(direction, entry.id);
                     },
                     child: new ListTile(
+                        key: AppKeys.entryListTile(entry.id.toString()),
                         title: new Text(
                           entry.text.indexOf('\n') > -1 ?
                             (entry.text.substring(0, min(30, entry.text.indexOf('\n')))
