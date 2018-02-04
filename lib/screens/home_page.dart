@@ -8,6 +8,7 @@ import 'package:yjournal/models.dart';
 import 'package:yjournal/widgets/add_fab.dart';
 import 'package:yjournal/widgets/monthly_picker.dart';
 import 'package:yjournal/widgets/entry_list.dart';
+import 'package:yjournal/widgets/hideable.dart';
 
 const int _firstDate = 1980;
 
@@ -62,11 +63,15 @@ class _HomePageView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          new MonthlyPicker(
-              key: AppKeys.monthlyPicker,
-              currentDate: new DateTime.now(),
-              scrollController: scrollController,
-              pageController: pageController,
+          new Hideable(
+            stackAlign: AlignmentDirectional.bottomCenter,
+            iconSize: kDayPickerRowHeight,
+            child: new MonthlyPicker(
+                key: AppKeys.monthlyPicker,
+                currentDate: new DateTime.now(),
+                scrollController: scrollController,
+                pageController: pageController,
+            )
           ),
           new Expanded(
               child: new EntryList(

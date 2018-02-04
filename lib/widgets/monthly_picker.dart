@@ -10,11 +10,11 @@ import 'package:yjournal/actions.dart';
 typedef void DateScrollCallback(DateTime newDate, ScrollController scrollController, PageController pageController);
 
 const Duration _kMonthScrollDuration = const Duration(milliseconds: 200);
-const double _kDayPickerRowHeight = 24.0;
+const double kDayPickerRowHeight = 24.0;
 const double _kDayPickerHeaderPadding = 4.0;
 const int _kMaxDayPickerRowCount = 6; // A 31 day month that starts on Saturday.
 // Two extra rows: one for the day-of-week header and one for the month header.
-const double _kMaxDayPickerHeight = _kDayPickerRowHeight * (_kMaxDayPickerRowCount + 2) + 2 * _kDayPickerHeaderPadding;
+const double _kMaxDayPickerHeight = kDayPickerRowHeight * (_kMaxDayPickerRowCount + 2) + 2 * _kDayPickerHeaderPadding;
 
 const int _kAnimationDuration = 500;
 
@@ -129,7 +129,7 @@ class _ViewState extends State<_View> {
       final String weekday = localizations.narrowWeekdays[i];
       result.add(new Expanded(
           child: new Container(
-            height: _kDayPickerRowHeight,
+            height: kDayPickerRowHeight,
             child: new Center(child: new Text(weekday, style: headerStyle))
           )
       ));
@@ -210,7 +210,7 @@ Widget _buildMonth(BuildContext context, int index) {
 
         Widget dayWidget = new Container(
           decoration: decoration,
-          height: _kDayPickerRowHeight,
+          height: kDayPickerRowHeight,
           child: new Padding(
             padding: new EdgeInsets.symmetric(vertical: 4.0),
             child: new Column(
@@ -244,7 +244,7 @@ Widget _buildMonth(BuildContext context, int index) {
     return new Column(
       children: <Widget>[
         new Container(
-          height: _kDayPickerRowHeight,
+          height: kDayPickerRowHeight,
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -274,7 +274,7 @@ Widget _buildMonth(BuildContext context, int index) {
             ),
             new PositionedDirectional(
               start: 8.0,
-              height: _kDayPickerRowHeight,
+              height: kDayPickerRowHeight,
               child: new IconButton(
                   icon: new Icon(Icons.arrow_left),
                   padding: EdgeInsets.zero,
@@ -285,7 +285,7 @@ Widget _buildMonth(BuildContext context, int index) {
             ),
             new PositionedDirectional(
               end: 8.0,
-              height: _kDayPickerRowHeight,
+              height: kDayPickerRowHeight,
               child: new IconButton(
                   icon: new Icon(Icons.arrow_right),
                   padding: EdgeInsets.zero,
